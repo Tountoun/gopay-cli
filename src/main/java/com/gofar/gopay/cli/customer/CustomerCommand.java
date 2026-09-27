@@ -28,7 +28,7 @@ public class CustomerCommand {
         this.customerService = customerService;
     }
 
-    @Command(name = {"customer", "find"}, description = "Get a customer by id", help = "customer find -- id", completionProvider = "idCompletionProvider")
+    @Command(name = {"customer", "find"}, description = "Get a customer by id", help = "customer find -- id")
     public String find(
             @Argument(index = 0, description = "The ID of the customer") @NotNull(message = "The customer id is required") Long id
     ) {
