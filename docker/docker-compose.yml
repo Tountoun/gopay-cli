@@ -1,0 +1,13 @@
+services:
+  gopay-db:
+    container_name: gopay_ctn
+    image: postgres:15
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: tountoun
+      POSTGRES_PASSWORD: tountoun
+      POSTGRES_DB: ops_gopay_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./data/ops_gopay_db:/var/lib/postgresql/data

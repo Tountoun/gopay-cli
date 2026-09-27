@@ -1,0 +1,6 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://${HOST:localhost}:${PORT:5432}/${DB:ops_gopay_db}
+    driver-class-name: org.postgresql.Driver
+    username: ${DB_USERNAME:tountoun}
+    password: ${DB_PASSWORD:tountoun}
