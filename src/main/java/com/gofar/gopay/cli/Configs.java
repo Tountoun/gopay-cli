@@ -30,7 +30,7 @@ public class Configs {
      */
     @Bean
     public AvailabilityProvider loginAvailabilityProvider() {
-        return () -> authCommand.getCurrentUser() == null ? Availability.available() : Availability.unavailable("You are always logged in");
+        return () -> authCommand.getCurrentUser() == null ? Availability.available() : Availability.unavailable("You are already logged in");
     }
 
     /**

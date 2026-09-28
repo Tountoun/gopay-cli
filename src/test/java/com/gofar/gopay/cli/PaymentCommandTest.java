@@ -1,10 +1,12 @@
 package com.gofar.gopay.cli;
 
 import com.gofar.gopay.GopayOperationsCliApplication;
+import com.gofar.gopay.cli.auth.AuthCommand;
 import com.gofar.gopay.domain.customer.CustomerRepository;
 import com.gofar.gopay.domain.payment.Payment;
 import com.gofar.gopay.domain.payment.PaymentRepository;
 import com.gofar.gopay.domain.payment.PaymentStatus;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
@@ -48,6 +50,14 @@ class PaymentCommandTest {
     @MockitoBean
     private PaymentRepository paymentRepository;
 
+    @MockitoBean
+    private AuthCommand authCommand;
+
+    @BeforeEach
+    void setUp() {
+        doReturn("admin").when(authCommand).getCurrentUser();
+    }
+
 
     @ParameterizedTest
     @EnumSource(value = PaymentStatus.class, names = {"FAILED", "REFUNDED"})
@@ -75,6 +85,19 @@ class PaymentCommandTest {
         ShellScreen shellScreen = client.sendCommand(provider);
 
         ShellAssertions.assertThat(shellScreen).containsText("not found");
+    }
+
+    @Test
+    void executeRefundCommandShouldShowErrorMessage(@Autowired ShellTestClient client) throws Exception {
+        doReturn(null).when(authCommand).getCurrentUser();
+        ShellInputProvider provider = ShellInputProvider.providerFor("payment refund -- 1")
+                .withInput("Client complaint")
+                .withInput("yes")
+                .build();
+
+        ShellScreen shellScreen = client.sendCommand(provider);
+
+        ShellAssertions.assertThat(shellScreen).containsText("Unauthenticated");
     }
 
     void cancelPaymentRefundShouldDisplayRefundCancellation(@Autowired ShellTestClient client) {
